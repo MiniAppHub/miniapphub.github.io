@@ -1,0 +1,16 @@
+{
+  "schema": 1,
+  "updated": "2026-11-11",
+  "apps": [
+    {
+      "id": "headmad.qr-tools",
+      "name": "QR-Tools",
+      "author": "HeadMad",
+      "version": "1.0.0",
+      "description": "Генератор и сканер QR-кодов. Также отдаёт фоновый API для других мини-приложений.",
+      "url": "https://miniapphub.github.io/app-headmad-qr-tools/",
+      "repo": "https://github.com/MiniAppHub/app-headmad-qr-tools",
+      "channel": "MAJOR"
+    }
+  ]
+}
