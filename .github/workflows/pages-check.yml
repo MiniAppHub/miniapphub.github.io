@@ -1,0 +1,16 @@
+# Проверка, что портал и каталог отдаются корректно после пуша.
+name: pages-check
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+      - run: |
+          node -e "JSON.parse(require('fs').readFileSync('catalog.json','utf8')); JSON.parse(require('fs').readFileSync('versions.json','utf8')); JSON.parse(require('fs').readFileSync('sources.json','utf8')); console.log('json ok')"
+          grep -q "<title>MiniAppHub" index.html && echo "index ok"
