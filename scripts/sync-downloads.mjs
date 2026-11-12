@@ -34,7 +34,7 @@ for (const client of CLIENTS) {
   /** @type {any} */
   let release = null;
   try {
-    release = await gh('https://api.github.com/repos/' + client.repo + '/releases/latest');
+    release = await gh('https://api.github.com/repos/' + client.repo + '/releases/tags/latest');
   } catch (err) {
     console.warn(client.name + ': релизов пока нет — ' + err.message);
   }
