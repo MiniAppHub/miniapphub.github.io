@@ -6,7 +6,15 @@
   "updated": "2026-11-12",
   "file": "downloads/files/MiniAppHub-0.1.0-appshell-mobile.apk",
   "size": 3763004,
-  "changelog": [],
+  "changelog": [
+    "Первая публичная сборка оболочки для Android.",
+    "Рантайм вынесен в отдельный репозиторий `appshell-core` и подключён как git submodule",
+    "У оболочки нет собственного интерфейса: страница — один `iframe` с песочницей",
+    "Приложение-лаунчер задаётся в `config.json`, значение берётся из переменной репозитория `LAUNCHER_APP`",
+    "Адрес каталога настраивается через `CATALOG_URL`, без правки кода",
+    "Платформенное переопределение `api/system/getInfo.js` отдаёт данные Capacitor",
+    "Сборка отладочная (`assembleDebug`), подписана debug-ключом и не предназначена для Google Play"
+  ],
   "repo": "https://github.com/MiniAppHub/appshell-mobile",
   "release": "https://github.com/MiniAppHub/appshell-mobile/releases/tag/v0.1.0"
 }

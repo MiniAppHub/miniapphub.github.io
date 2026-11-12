@@ -6,7 +6,15 @@
   "updated": "2026-11-12",
   "file": "downloads/files/MiniAppHub-0.1.0-appshell-desktop-setup.exe",
   "size": 1499664,
-  "changelog": [],
+  "changelog": [
+    "Первая публичная сборка оболочки для Windows.",
+    "Тот же рантайм `appshell-core`, что и в Android-версии, подключён как git submodule",
+    "Окно без интерфейса: единственный `iframe` с песочницей, внутри — приложение-лаунчер",
+    "Лаунчер задаётся через переменную репозитория `LAUNCHER_APP`, каталог — через `CATALOG_URL`",
+    "Переопределения `api/system/getInfo.js` и `api/system/openExternal.js` для Windows",
+    "В релизе два установщика: NSIS `.exe` и `.msi`; на портал попадает `.exe`",
+    "Сборка не подписана: SmartScreen может показать предупреждение при установке"
+  ],
   "repo": "https://github.com/MiniAppHub/appshell-desktop",
   "release": "https://github.com/MiniAppHub/appshell-desktop/releases/tag/v0.1.0"
 }
