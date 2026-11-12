@@ -2,9 +2,11 @@
   "name": "appshell-mobile",
   "title": "Android",
   "platform": "Android · APK",
-  "version": null,
-  "updated": null,
-  "file": null,
+  "version": "0.1.0",
+  "updated": "2026-11-12",
+  "file": "downloads/files/MiniAppHub-0.1.0-appshell-mobile.apk",
+  "size": 3763004,
   "changelog": [],
-  "repo": "https://github.com/MiniAppHub/appshell-mobile"
+  "repo": "https://github.com/MiniAppHub/appshell-mobile",
+  "release": "https://github.com/MiniAppHub/appshell-mobile/releases/tag/v0.1.0"
 }
