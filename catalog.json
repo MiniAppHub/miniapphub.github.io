@@ -25,7 +25,7 @@
       "id": "headmad.qr-tools",
       "name": "qr-tools",
       "author": "headmad",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Генератор и сканер QR-кодов. Фоновый API: генерация QR в SVG для других приложений.",
       "url": "https://miniapphub.github.io/app-headmad-qr-tools/",
       "repo": "https://github.com/MiniAppHub/app-headmad-qr-tools",
