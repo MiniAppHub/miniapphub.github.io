@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0d10">
+<title>Каталог — MiniAppHub</title>
+<meta name="description" content="MiniAppHub — платформа HTML5 мини-приложений: каталог, оболочки для Android и Windows, открытый API.">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="index.html"><i></i>MiniAppHub</a>
+  <div class="links">
+    <a href="catalog.html" class="on">Каталог</a>
+    <a href="docs.html" class="">Документация</a>
+    <a href="downloads.html" class="">Скачать</a>
+  </div>
+</div></nav>
+
+<style>
+  body.in-shell{padding-bottom:0}
+  body.in-shell .wrap{padding-top:18px}
+</style>
+<main class="wrap">
+  <h1 style="font-size:30px;margin:36px 0 6px">Каталог приложений</h1>
+  <p class="muted" id="sub">Загрузка…</p>
+  <input id="q" class="search" type="search" placeholder="Поиск по названию, описанию или автору" aria-label="Поиск">
+  <div id="apps" class="apps"></div>
+</main>
+<script type="module">
+import { inShell, installed, install } from './assets/bridge.js';
+
+if (inShell) document.body.classList.add('in-shell');
+
+const $ = (id) => document.getElementById(id);
+const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+let apps = [];
+let have = [];
+
+/** @param {any[]} list */
+function render(list) {
+  const byId = new Map(have.map((a) => [a.id, a]));
+  $('apps').innerHTML = list.length ? list.map((a) => {
+    const local = byId.get(a.id);
+    const isOn = Boolean(local);
+    const upd = local && local.version !== a.version;
+    const label = upd ? 'Обновить' : isOn ? 'Установлено' : 'Установить';
+    const cls = isOn && !upd ? 'tag on' : 'tag';
+    const btn = upd
+      ? `<button class="btn" data-install="${esc(a.id)}">Обновить</button>`
+      : isOn
+        ? ''
+        : `<button class="btn" data-install="${esc(a.id)}">Установить</button>`;
+    const alt = !inShell && !isOn
+      ? `<a class="btn ghost" href="${esc(a.url)}" target="_blank" rel="noopener">Открыть</a>`
+      : '';
+    return `
+      <article class="app">
+        <div class="top">
+          <div class="ico">${a.icon ? `<img src="${esc(a.icon)}" alt="">` : esc((a.name || '?')[0].toUpperCase())}</div>
+          <div>
+            <div class="name">${esc(a.name)}</div>
+            <div class="meta">${esc(a.author || '')} · v${esc(a.version)}</div>
+          </div>
+        </div>
+        <p>${esc(a.description || '')}</p>
+        <div class="foot">${btn}${alt}<span class="${cls}" style="margin-left:auto">${label}</span></div>
+      </article>`;
+  }).join('') : '<div class="empty">Ничего не найдено</div>';
+}
+
+async function load() {
+  try {
+    const res = await fetch('catalog.json', { cache: 'no-cache' });
+    const data = await res.json();
+    apps = Array.isArray(data.apps) ? data.apps : [];
+    $('sub').textContent = inShell
+      ? 'Установка идёт прямо в оболочку · ' + apps.length + ' приложений'
+      : 'Откройте каталог внутри оболочки MiniAppHub, чтобы ставить приложения одним нажатием';
+  } catch (err) {
+    apps = [];
+    $('sub').textContent = 'Не удалось загрузить каталог: ' + err.message;
+  }
+  render(apps);
+}
+
+$('q').addEventListener('input', () => {
+  const t = $('q').value.trim().toLowerCase();
+  render(apps.filter((a) => [a.name, a.description, a.author, a.id]
+    .some((v) => String(v || '').toLowerCase().includes(t))));
+});
+
+$('apps').addEventListener('click', async (e) => {
+  const btn = e.target.closest('[data-install]');
+  if (!btn) return;
+  const id = btn.dataset.install;
+  btn.disabled = true;
+  btn.textContent = 'Установка…';
+  try {
+    await install(id);
+    have = await installed();
+    render(apps);
+  } catch (err) {
+    btn.disabled = false;
+    btn.textContent = 'Ошибка';
+    $('sub').textContent = 'Установка не удалась: ' + err.message;
+  }
+});
+
+(async () => { have = await installed(); await load(); })();
+</script>
+
+<footer><div class="wrap">
+  <span>MiniAppHub · HTML5 мини-приложения</span>
+  <span><a href="docs.html">API</a> · <a href="catalog.html">Каталог</a> · <a href="downloads.html">Скачать</a></span>
+</div></footer>
+</body>
+</html>

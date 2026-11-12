@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0d10">
+<title>Документация — MiniAppHub</title>
+<link rel="stylesheet" href="assets/site.css">
+<style>
+  .layout{display:grid;grid-template-columns:220px 1fr;gap:40px;align-items:start}
+  .side{position:sticky;top:84px;font-size:14px;display:flex;flex-direction:column;gap:2px}
+  .side span{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.09em;margin:16px 0 6px}
+  .side a{color:var(--muted);padding:5px 0}
+  .side a:hover{color:var(--text)}
+  section{padding:0 0 8px}
+  section h2{margin-top:34px}
+  @media(max-width:820px){.layout{grid-template-columns:1fr}.side{display:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="index.html"><i></i>MiniAppHub</a>
+  <div class="links">
+    <a href="catalog.html">Каталог</a>
+    <a href="docs.html" class="on">Документация</a>
+    <a href="downloads.html">Скачать</a>
+  </div>
+</div></nav>
+
+<main class="wrap"><div class="layout">
+<aside class="side">
+  <span>Начало</span>
+  <a href="#intro">Введение</a>
+  <a href="#anatomy">Анатомия приложения</a>
+  <a href="#manifest">Манифест</a>
+  <a href="#publish">Публикация</a>
+  <span>API</span>
+  <a href="#bridge">Как работает мост</a>
+  <a href="#shell">shell.*</a>
+  <a href="#apps">apps.*</a>
+  <a href="#system">system.*</a>
+  <a href="#permissions">Разрешения</a>
+  <a href="#actions">Свои действия</a>
+  <span>Оболочки</span>
+  <a href="#shells">Ядро и платформы</a>
+  <a href="#launcher">Лаунчер</a>
+</aside>
+
+<div>
+<h1 style="font-size:32px;margin:36px 0 10px">Документация</h1>
+<p class="lead">Всё, что нужно, чтобы написать мини-приложение, опубликовать его в каталоге
+и работать с оболочкой MiniAppHub.</p>
+
+<section id="intro">
+<h2>Введение</h2>
+<p>MiniAppHub — платформа для HTML5 мини-приложений. Приложение — это обычный статический сайт
+плюс файл манифеста. Оболочка (Android или Windows) показывает приложение в изолированном
+<code>iframe</code> и даёт ему доступ к системным возможностям через мост сообщений.</p>
+<p>У оболочки нет собственного интерфейса. Единственное, что она делает, — открывает мини-приложение,
+назначенное лаунчером. По умолчанию это <code>miniapphub.home</code>: рабочий стол, каталог и настройки.</p>
+<div class="note">Никаких сборщиков и транспиляции. Файлы отдаются как есть, код пишется
+в ES-модулях, документация — через JSDoc.</div>
+</section>
+
+<section id="anatomy">
+<h2>Анатомия приложения</h2>
+<pre>mapp/
+  mapp.manifest.json     <span class="c">манифест: id, версия, права, роутеры</span>
+  public/
+    index.html           <span class="c">точка входа интерфейса</span>
+    app.js               <span class="c">логика, ES-модуль</span>
+    api/
+      sdk.js             <span class="c">клиент моста</span>
+      qr.js              <span class="c">фоновое API для других приложений</span></pre>
+<p>Каталог <code>public/</code> публикуется на GitHub Pages как есть. Роутеры в манифесте
+позволяют держать разные точки входа для клиента, веба и превью.</p>
+</section>
+
+<section id="manifest">
+<h2>Манифест</h2>
+<pre>{
+  <span class="s">"id"</span>: <span class="s">"headmad.qr-tools"</span>,          <span class="c">// author.app-name, ставится автоматически</span>
+  <span class="s">"name"</span>: <span class="s">"qr-tools"</span>,
+  <span class="s">"version"</span>: <span class="s">"1.0.0"</span>,               <span class="c">// семвер, должен совпадать с тегом vX.Y.Z</span>
+  <span class="s">"author"</span>: <span class="s">"headmad"</span>,                <span class="c">// GitHub-логин</span>
+  <span class="s">"description"</span>: <span class="s">"Генератор QR-кодов"</span>,
+  <span class="s">"icon"</span>: <span class="s">"public/assets/icon.svg"</span>,
+  <span class="s">"permissions"</span>: [<span class="s">"apps.manage"</span>],
+  <span class="s">"dependencies"</span>: [],
+  <span class="s">"routers"</span>: { <span class="s">"app"</span>: <span class="s">"public"</span>, <span class="s">"web"</span>: <span class="s">"public"</span> }
+}</pre>
+<table>
+  <tr><th>Поле</th><th>Назначение</th></tr>
+  <tr><td><code>id</code></td><td>Уникальный идентификатор <code>author.name</code>. Префикс обязан совпадать с <code>author</code>.</td></tr>
+  <tr><td><code>version</code></td><td>Семантическая версия. Обновление в каталоге происходит при смене версии.</td></tr>
+  <tr><td><code>icon</code></td><td>Путь внутри <code>mapp/</code>. SVG или PNG.</td></tr>
+  <tr><td><code>permissions</code></td><td>Запрашиваемые разрешения. Пользователь видит их при установке.</td></tr>
+  <tr><td><code>dependencies</code></td><td>id приложений, чьё <code>public/api/</code> нужно для работы.</td></tr>
+  <tr><td><code>routers</code></td><td>Точки входа: <code>app</code>, <code>client</code>, <code>web</code>, <code>preview</code>.</td></tr>
+</table>
+</section>
+
+<section id="publish">
+<h2>Публикация</h2>
+<p>Порядок повторяет механизм Fork + Pull Request:</p>
+<ol>
+  <li>Fork репозитория <a href="https://github.com/MiniAppHub/template">MiniAppHub/template</a>.</li>
+  <li>Правка кода в <code>mapp/</code> и версии в манифесте.</li>
+  <li>Pull Request — CI проверяет манифест и совпадение автора.</li>
+  <li>Тег <code>vX.Y.Z</code> — собирается архив <code>mapp/</code>, создаётся GitHub Release,
+      обновляется ветка <code>gh-pages</code>.</li>
+  <li>Портал забирает релиз и обновляет запись в <code>catalog.json</code>.</li>
+</ol>
+<div class="note">Смена только patch или minor перезаписывает релиз <code>latest</code>.
+Смена major выпускает отдельный релиз с полным архивом.</div>
+</section>
+
+<section id="bridge">
+<h2>Как работает мост</h2>
+<p>Приложение не имеет прямого доступа к оболочке. Вместо этого оно отправляет сообщение
+из своего <code>iframe</code> и ждёт ответа:</p>
+<pre><span class="c">// приложение → оболочка</span>
+{ source: <span class="s">'mapp'</span>, id: 7, namespace: <span class="s">'shell'</span>, action: <span class="s">'getSettings'</span>, params: {} }
+
+<span class="c">// оболочка → приложение</span>
+{ source: <span class="s">'mapp-shell'</span>, id: 7, response: { ok: true, result: { … } } }</pre>
+<p>Оболочка принимает сообщения только из своего <code>iframe</code>. Ответ всегда имеет форму
+<code>{ ok: true, result }</code> либо <code>{ ok: false, error }</code>.</p>
+<p>Внутри оболочки действие подгружается динамически — <code>import('./api/shell/getSettings.js')</code> —
+и вызывается его экспорт по умолчанию. Один файл содержит ровно одно действие.</p>
+<pre><span class="k">import</span> { mapp } <span class="k">from</span> <span class="s">'./api/sdk.js'</span>;
+
+<span class="k">const</span> res = <span class="k">await</span> mapp.shell(<span class="s">'getSettings'</span>);
+<span class="k">if</span> (!res.ok) console.error(res.error);
+<span class="k">else</span> console.log(res.result.theme);</pre>
+</section>
+
+<section id="shell">
+<h2>shell.*</h2>
+<table>
+  <tr><th>Действие</th><th>Параметры</th><th>Результат</th></tr>
+  <tr><td><code>shell('getSettings')</code></td><td>—</td>
+      <td><code>{ catalogUrl, launcher, theme }</code></td></tr>
+  <tr><td><code>shell('setSettings')</code></td>
+      <td><code>{ catalogUrl?, launcher?, theme? }</code></td>
+      <td>Обновлённые настройки. Проверяются схема URL и значение темы</td></tr>
+  <tr><td><code>shell('getVersion')</code></td><td>—</td>
+      <td><code>{ version, platform, api }</code></td></tr>
+  <tr><td><code>shell('openApp')</code></td><td><code>{ id }</code></td>
+      <td>Открывает приложение вместо текущего. Нужно <code>shell.launcher</code></td></tr>
+  <tr><td><code>shell('closeApp')</code></td><td>—</td>
+      <td>Возвращает управление лаунчеру</td></tr>
+  <tr><td><code>shell('setLauncher')</code></td><td><code>{ id }</code> или <code>{ id: null }</code></td>
+      <td>Назначает лаунчер. Нужно <code>shell.launcher</code></td></tr>
+</table>
+<pre><span class="k">await</span> mapp.shell(<span class="s">'setSettings'</span>, { theme: <span class="s">'light'</span> });
+<span class="k">await</span> mapp.shell(<span class="s">'openApp'</span>, { id: <span class="s">'headmad.qr-tools'</span> });</pre>
+</section>
+
+<section id="apps">
+<h2>apps.*</h2>
+<table>
+  <tr><th>Действие</th><th>Параметры</th><th>Результат</th></tr>
+  <tr><td><code>apps('getInstalled')</code></td><td>—</td>
+      <td>Массив <code>{ id, name, version, url, permissions, icon }</code></td></tr>
+  <tr><td><code>apps('installApp')</code></td><td><code>{ id }</code> или <code>{ manifestUrl }</code></td>
+      <td>Запись установленного приложения. Нужно <code>apps.manage</code></td></tr>
+  <tr><td><code>apps('uninstallApp')</code></td><td><code>{ id }</code></td>
+      <td><code>{ id }</code>. Нужно <code>apps.manage</code></td></tr>
+</table>
+<p>Установка по <code>id</code> берёт адрес из <code>catalog.json</code>. Установка по
+<code>manifestUrl</code> читает манифест напрямую — так работают экспериментальные сборки,
+которых нет в каталоге.</p>
+</section>
+
+<section id="system">
+<h2>system.*</h2>
+<table>
+  <tr><th>Действие</th><th>Параметры</th><th>Результат</th></tr>
+  <tr><td><code>system('getInfo')</code></td><td>—</td>
+      <td><code>{ platform, shell, language, online, time }</code>. Платформа может добавить поля</td></tr>
+  <tr><td><code>system('share')</code></td><td><code>{ title, text, url }</code></td>
+      <td><code>{ shared, copied }</code>. Без Web Share копирует в буфер</td></tr>
+</table>
+</section>
+
+<section id="permissions">
+<h2>Разрешения</h2>
+<table>
+  <tr><th>Разрешение</th><th>Что открывает</th></tr>
+  <tr><td><code>apps.manage</code></td><td><code>installApp</code>, <code>uninstallApp</code></td></tr>
+  <tr><td><code>shell.launcher</code></td><td><code>openApp</code>, <code>setLauncher</code> — приложение может стать лаунчером</td></tr>
+  <tr><td><code>filesystem.external</code></td><td>Импорт файлов из общей файловой системы</td></tr>
+  <tr><td><code>network.server</code></td><td>Поднять локальный сервер для обмена между устройствами</td></tr>
+  <tr><td><code>network.bluetooth</code></td><td>Обмен по Bluetooth</td></tr>
+  <tr><td><code>system.contacts</code></td><td>Доступ к контактам устройства</td></tr>
+  <tr><td><code>apps.execute</code></td><td>Запуск внешних приложений и интентов</td></tr>
+</table>
+<p>Проверка выполняется на стороне оболочки: без разрешения в манифесте действие вернёт
+<code>{ ok: false, error: 'permission denied: …' }</code>.</p>
+</section>
+
+<section id="actions">
+<h2>Свои действия в оболочке</h2>
+<p>Оболочка ищет реализацию сначала в своём каталоге <code>api/&lt;namespace&gt;/&lt;action&gt;.js</code>,
+затем в ядре <code>core/api/&lt;namespace&gt;/&lt;action&gt;.js</code>. Поэтому платформа
+переопределяет поведение, не меняя ядро.</p>
+<pre><span class="c">// api/system/getInfo.js — переопределение для Windows</span>
+<span class="k">export default async function</span> getInfo() {
+  <span class="k">return</span> { platform: <span class="s">'windows'</span>, webview: <span class="s">'tauri'</span> };
+}</pre>
+<p>Имя действия ограничено шаблоном <code>[a-z][a-zA-Z0-9]</code>, подстановка пути невозможна.</p>
+</section>
+
+<section id="shells">
+<h2>Ядро и платформы</h2>
+<table>
+  <tr><th>Репозиторий</th><th>Роль</th></tr>
+  <tr><td><a href="https://github.com/MiniAppHub/appshell-core"><code>appshell-core</code></a></td>
+      <td>Рантайм, мост, хранилище, действия API, SDK. Подключается как submodule</td></tr>
+  <tr><td><a href="https://github.com/MiniAppHub/appshell-mobile"><code>appshell-mobile</code></a></td>
+      <td>Android: Capacitor, сборка APK</td></tr>
+  <tr><td><a href="https://github.com/MiniAppHub/appshell-desktop"><code>appshell-desktop</code></a></td>
+      <td>Windows: Tauri 2, сборка MSI и NSIS</td></tr>
+  <tr><td><a href="https://github.com/MiniAppHub/app-miniapphub-home"><code>app-miniapphub-home</code></a></td>
+      <td>Лаунчер: рабочий стол, каталог, настройки</td></tr>
+</table>
+</section>
+
+<section id="launcher">
+<h2>Лаунчер и первый запуск</h2>
+<p>При старте оболочка читает <code>config.json</code> из собственной сборки:</p>
+<pre>{ <span class="s">"launcher"</span>: <span class="s">"miniapphub.home"</span>, <span class="s">"catalogUrl"</span>: <span class="s">"https://miniapphub.github.io/catalog.json"</span> }</pre>
+<p>Значение <code>launcher</code> приходит из переменной репозитория <code>LAUNCHER_APP</code>
+и попадает в сборку на этапе CI — менять его можно без правки кода. Дальше:</p>
+<ol>
+  <li>Оболочка проверяет, установлен ли лаунчер, и при необходимости ставит его из каталога.</li>
+  <li>Лаунчер открывается в песочнице и рисует интерфейс.</li>
+  <li>Пользователь может сменить лаунчер: приложение с разрешением <code>shell.launcher</code>
+      вызывает <code>setLauncher</code>.</li>
+</ol>
+<p>Если каталог недоступен, используется <code>launcherUrl</code> — прямой адрес лаунчера на GitHub Pages.</p>
+</section>
+
+</div></div></main>
+<footer><div class="wrap">
+  <span>MiniAppHub · HTML5 мини-приложения</span>
+  <span><a href="catalog.html">Каталог</a> · <a href="downloads.html">Скачать</a></span>
+</div></footer>
+</body>
+</html>

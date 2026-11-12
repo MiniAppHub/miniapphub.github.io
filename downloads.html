@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0d10">
+<title>Скачать — MiniAppHub</title>
+<meta name="description" content="MiniAppHub — платформа HTML5 мини-приложений: каталог, оболочки для Android и Windows, открытый API.">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<nav><div class="wrap">
+  <a class="logo" href="index.html"><i></i>MiniAppHub</a>
+  <div class="links">
+    <a href="catalog.html" class="">Каталог</a>
+    <a href="docs.html" class="">Документация</a>
+    <a href="downloads.html" class="on">Скачать</a>
+  </div>
+</div></nav>
+
+<main class="wrap">
+  <h1 style="font-size:30px;margin:36px 0 6px">Скачать оболочку</h1>
+  <p class="lead">Одна оболочка на устройство. Внутри неё уже есть лаунчер с каталогом —
+  отдельно ничего скачивать не нужно.</p>
+  <div id="list" class="dl"><div class="card"><p class="muted" style="margin:0">Загрузка списка…</p></div></div>
+  <div class="note">Файлы обновляются автоматически при каждом релизе оболочки.
+  Рядом с установщиком лежит JSON с версией, датой и списком изменений.</div>
+</main>
+<script type="module">
+const $ = (id) => document.getElementById(id);
+const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const CLIENTS = ['appshell-mobile', 'appshell-desktop'];
+
+function card(d) {
+  const changes = Array.isArray(d.changelog) && d.changelog.length
+    ? `<ul>${d.changelog.slice(0, 5).map((c) => `<li>${esc(c)}</li>`).join('')}</ul>`
+    : '<p class="muted" style="font-size:13px;margin:0">Список изменений появится после ближайшего релиза.</p>';
+  const size = d.size ? ` · ${(d.size / 1048576).toFixed(1)} МБ` : '';
+  const link = d.file
+    ? `<a class="btn" href="${esc(d.file)}" download>Скачать</a>`
+    : `<span class="tag">сборка идёт</span>`;
+  return `
+    <div class="card">
+      <h3>${esc(d.title || d.name)} <span class="tag">${esc(d.platform || '')}</span></h3>
+      <div class="ver">Версия ${esc(d.version || '—')} · обновлено ${esc(d.updated || '—')}${size}</div>
+      ${changes}
+      <div class="foot" style="margin-top:12px;display:flex;align-items:center;gap:10px">
+        ${link}
+        ${d.file ? `<a class="muted" href="${esc(d.file.replace(/^.*\//, 'downloads/files/'))}.json" hidden></a>` : ''}
+      </div>
+      ${d.file ? `<div class="file">${esc(d.file)}</div>` : ''}
+    </div>`;
+}
+
+(async () => {
+  const cards = await Promise.all(CLIENTS.map(async (name) => {
+    try {
+      const res = await fetch('downloads/' + name + '.json', { cache: 'no-cache' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return card(await res.json());
+    } catch {
+      return card({ title: name, platform: name.replace('appshell-', ''), version: '—', updated: '—' });
+    }
+  }));
+  $('list').innerHTML = cards.join('');
+})();
+</script>
+
+<footer><div class="wrap">
+  <span>MiniAppHub · HTML5 мини-приложения</span>
+  <span><a href="docs.html">API</a> · <a href="catalog.html">Каталог</a> · <a href="downloads.html">Скачать</a></span>
+</div></footer>
+</body>
+</html>

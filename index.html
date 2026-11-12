@@ -3,82 +3,83 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>MiniAppHub — каталог мини-приложений</title>
-<style>
-  :root{--bg:#0b0d10;--card:#14171c;--line:#222730;--text:#e7eaf0;--muted:#8a93a3;--accent:#5b8cff;--r:14px}
-  *{box-sizing:border-box}
-  body{margin:0;font:15px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text)}
-  header{padding:48px 24px 24px;max-width:1080px;margin:auto}
-  h1{margin:0 0 8px;font-size:28px;letter-spacing:-.02em}
-  header p{margin:0;color:var(--muted)}
-  main{max-width:1080px;margin:auto;padding:0 24px 64px}
-  .search{width:100%;padding:12px 16px;border-radius:var(--r);border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit;margin:16px 0 24px;outline:none}
-  .search:focus{border-color:var(--accent)}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-  .app{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;display:flex;flex-direction:column;gap:10px;text-decoration:none;color:inherit;transition:border-color .15s}
-  .app:hover{border-color:var(--accent)}
-  .top{display:flex;align-items:center;gap:12px}
-  .ico{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#5b8cff,#8b5cf6);display:grid;place-items:center;font-weight:700}
-  .name{font-weight:600}
-  .meta{color:var(--muted);font-size:13px}
-  .desc{color:var(--muted);font-size:14px;margin:0}
-  .tag{align-self:flex-start;font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
-  .empty{color:var(--muted);padding:40px 0;text-align:center}
-  footer{max-width:1080px;margin:auto;padding:0 24px 40px;color:var(--muted);font-size:13px}
-  a{color:var(--accent)}
-</style>
+<meta name="theme-color" content="#0b0d10">
+<title>MiniAppHub — платформа HTML5 мини-приложений</title>
+<meta name="description" content="MiniAppHub — платформа HTML5 мини-приложений: каталог, оболочки для Android и Windows, открытый API.">
+<link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
-<header>
-  <h1>MiniAppHub</h1>
-  <p>Каталог HTML5-мини-приложений. Установка в оболочку <a href="https://github.com/MiniAppHub/appshell">appshell</a>, публикация через <a href="https://github.com/MiniAppHub/template">template</a>.</p>
-</header>
-<main>
-  <input id="q" class="search" type="search" placeholder="Поиск по названию или автору…" aria-label="Поиск">
-  <div id="grid" class="grid"></div>
-  <div id="empty" class="empty" hidden>Ничего не найдено</div>
-</main>
-<footer>
-  Реестр: <a href="catalog.json">catalog.json</a> · Версии клиентов: <a href="versions.json">versions.json</a> · Бесплатный хостинг на GitHub Pages
-</footer>
-<script type="module">
-  const grid = document.getElementById('grid');
-  const q = document.getElementById('q');
-  const empty = document.getElementById('empty');
-  let apps = [];
+<nav><div class="wrap">
+  <a class="logo" href="index.html"><i></i>MiniAppHub</a>
+  <div class="links">
+    <a href="catalog.html" class="">Каталог</a>
+    <a href="docs.html" class="">Документация</a>
+    <a href="downloads.html" class="">Скачать</a>
+  </div>
+</div></nav>
 
-  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+<header class="hero"><div class="wrap">
+  <span class="pill">Версия API <b>1</b> · Android · Windows</span>
+  <h1>Мини-приложения<br>живут в одной оболочке</h1>
+  <p class="lead">MiniAppHub — платформа, где HTML5-приложение упаковывается в репозиторий,
+  публикуется через GitHub и запускается в песочнице на телефоне и на компьютере.
+  Разработчикам — бесплатный хостинг и автоматические релизы. Пользователям — один каталог.</p>
+  <div class="actions">
+    <a class="btn" href="downloads.html">Скачать оболочку</a>
+    <a class="btn ghost" href="catalog.html">Открыть каталог</a>
+    <a class="btn ghost" href="docs.html">Документация API</a>
+  </div>
+</div></header>
 
-  function render(list) {
-    grid.innerHTML = list.map(a => `
-      <a class="app" href="${esc(a.url)}" target="_blank" rel="noopener">
-        <div class="top">
-          <div class="ico">${esc((a.name || '?')[0].toUpperCase())}</div>
-          <div>
-            <div class="name">${esc(a.name)}</div>
-            <div class="meta">${esc(a.author)} · v${esc(a.version)}</div>
-          </div>
-        </div>
-        <p class="desc">${esc(a.description)}</p>
-        <span class="tag">${esc(a.id)}</span>
-      </a>`).join('');
-    empty.hidden = list.length > 0;
-  }
+<section><div class="wrap">
+  <h2>Как это устроено</h2>
+  <div class="grid3">
+    <div class="card">
+      <h3>Оболочка без интерфейса</h3>
+      <p>Приложение для Android и Windows — это окно с одной iframe-песочницей.
+      Весь интерфейс рисует мини-приложение, назначенное лаунчером.</p>
+    </div>
+    <div class="card">
+      <h3>Мини-приложение — обычный сайт</h3>
+      <p>Чистый HTML, CSS и JavaScript без сборки. Манифест описывает id, версию,
+      иконку и запрашиваемые разрешения.</p>
+    </div>
+    <div class="card">
+      <h3>Публикация через GitHub</h3>
+      <p>Fork шаблона, тег <code>vX.Y.Z</code> — и релиз с архивом собирается сам,
+      а запись в каталоге обновляется роботом.</p>
+    </div>
+  </div>
+</div></section>
 
-  try {
-    const res = await fetch('catalog.json', { cache: 'no-cache' });
-    const data = await res.json();
-    apps = data.apps || [];
-  } catch (e) {
-    empty.textContent = 'Не удалось загрузить каталог';
-    empty.hidden = false;
-  }
-  render(apps);
+<section><div class="wrap">
+  <h2>Мост API вместо нативных SDK</h2>
+  <p>Мини-приложение общается с оболочкой через <code>postMessage</code>.
+  Одно действие — один файл, который оболочка подгружает динамически.</p>
+<pre><span class="c">// внутри мини-приложения</span>
+<span class="k">import</span> {{ mapp }} <span class="k">from</span> <span class="s">'./api/sdk.js'</span>;
 
-  q.addEventListener('input', () => {
-    const t = q.value.trim().toLowerCase();
-    render(apps.filter(a => [a.name, a.author, a.description, a.id].some(v => String(v || '').toLowerCase().includes(t))));
-  });
-</script>
+<span class="k">const</span> settings = <span class="k">await</span> mapp.shell(<span class="s">'getSettings'</span>);
+<span class="k">await</span> mapp.shell(<span class="s">'setSettings'</span>, {{ theme: <span class="s">'light'</span> }});
+<span class="k">await</span> mapp.apps(<span class="s">'installApp'</span>, {{ id: <span class="s">'headmad.qr-tools'</span> }});</pre>
+  <p class="muted">Ответ всегда в форме <code>{ ok, result | error }</code>, как в Telegram Bot API.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Что уже работает</h2>
+  <div class="grid3">
+    <div class="card"><h3>Каталог</h3><p>Плитка приложений из <code>catalog.json</code>. Открытый
+    из оболочки каталог умеет устанавливать приложения одним нажатием.</p></div>
+    <div class="card"><h3>Скачивание</h3><p>APK и установщик Windows пересобираются на каждый релиз
+    и публикуются вместе с JSON о версии и списком изменений.</p></div>
+    <div class="card"><h3>Ядро и платформы</h3><p>Общий рантайм в <code>appshell-core</code>,
+    отдельные репозитории для Android и Windows.</p></div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>MiniAppHub · HTML5 мини-приложения</span>
+  <span><a href="docs.html">API</a> · <a href="catalog.html">Каталог</a> · <a href="downloads.html">Скачать</a></span>
+</div></footer>
 </body>
 </html>

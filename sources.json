@@ -1,6 +1,17 @@
 {
   "schema": 1,
   "apps": [
-    { "repo": "MiniAppHub/app-headmad-qr-tools", "pages": "https://miniapphub.github.io/app-headmad-qr-tools/", "branch": "main" }
+    {
+      "repo": "MiniAppHub/app-miniapphub-home",
+      "pages": "https://miniapphub.github.io/app-miniapphub-home/",
+      "branch": "main",
+      "icon": "https://miniapphub.github.io/app-miniapphub-home/assets/icon.svg"
+    },
+    {
+      "repo": "MiniAppHub/app-headmad-qr-tools",
+      "pages": "https://miniapphub.github.io/app-headmad-qr-tools/",
+      "branch": "main",
+      "icon": "https://miniapphub.github.io/app-headmad-qr-tools/assets/icon.svg"
+    }
   ]
 }

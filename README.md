@@ -1,14 +1,27 @@
-# MiniAppHub — портал
+# miniapphub.github.io — портал
 
-Публичный каталог мини-приложений экосистемы MiniAppHub.
+Статический портал платформы MiniAppHub на GitHub Pages. Без сборки.
 
-- `index.html` — страница каталога (статическая, без сборки, Vanilla JS).
-- `catalog.json` — реестр приложений. Обновляется автоматически при релизе (см. `template`).
-- `versions.json` — актуальные версии клиента `appshell` по каналам (`stable`, `beta`).
+```
+index.html        лендинг: что это, как устроено, пример API
+catalog.html      каталог мини-приложений из catalog.json
+docs.html         документация API и контракта приложений
+downloads.html    сборки оболочек Android и Windows
+assets/           стили и клиент моста
+downloads/        метаданные и установщики (обновляются роботом)
+scripts/          синхронизация каталога и скачиваний
+sources.json      список мини-приложений-источников
+```
 
-## Как попасть в каталог
-1. Сделайте fork репозитория [template](https://github.com/MiniAppHub/template) и создайте своё приложение.
-2. Откройте Pull Request — GitHub Actions проверит манифест и подготовит релиз.
-3. После релиза запись появится в `catalog.json`.
+## Каталог внутри оболочки
+На `catalog.html` подключён `assets/bridge.js`. Если страница открыта из оболочки
+(`window.parent !== window`), появляется установка в один клик: страница вызывает
+`apps.installApp`, а оболочка разрешает это по совпадению origin с `catalogUrl`.
 
-Хостинг: GitHub Pages (ветка `main`, корень).
+## Автообновление
+- **Релиз мини-приложения** → `repository_dispatch` (`app-release`) → `catalog.json`.
+- **Релиз оболочки** → `repository_dispatch` (`shell-release`) → `downloads/*.json` и файл установщика.
+- Ежедневные cron-запуски как страховка.
+
+Для кросс-репозиторных событий нужен секрет `PORTAL_TOKEN` в репозиториях оболочек и приложений
+(fine-grained PAT с правом Contents: read на портал).

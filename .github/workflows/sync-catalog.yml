@@ -1,9 +1,11 @@
-# Обновление catalog.json по sources.json (ежедневно и вручную).
+# Полная синхронизация каталога мини-приложений.
 name: sync-catalog
 on:
   schedule:
     - cron: '17 3 * * *'
   workflow_dispatch:
+  repository_dispatch:
+    types: [app-release]
 
 permissions:
   contents: write
@@ -18,10 +20,22 @@ jobs:
       - name: Собрать catalog.json
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: node scripts/sync-catalog.mjs
-      - name: Проверка каталога
-        run: node -e "const c=require('./catalog.json'); if(!Array.isArray(c.apps)) throw new Error('bad catalog'); for (const a of c.apps) for (const k of ['id','name','version','url']) if(!a[k]) throw new Error('нет '+k+' в '+a.id); console.log('ok', c.apps.length)"
-      - name: Коммит изменений
+        run: |
+          if [ "${{ github.event_name }}" = "repository_dispatch" ] && [ -n "${{ github.event.client_payload.repo }}" ]; then
+            node scripts/apply-release.mjs "${{ github.event.client_payload.repo }}"
+          else
+            node scripts/sync-catalog.mjs
+          fi
+      - name: Проверить каталог
+        run: |
+          node -e "
+            const c = require('./catalog.json');
+            if (!Array.isArray(c.apps)) throw new Error('apps не массив');
+            for (const a of c.apps) {
+              for (const k of ['id','name','version','url']) if (!a[k]) throw new Error('нет ' + k + ' в ' + a.id);
+            }
+            console.log('ok', c.apps.length);"
+      - name: Коммит
         run: |
           git config user.name "miniapphub-bot"
           git config user.email "bot@users.noreply.github.com"

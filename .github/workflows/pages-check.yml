@@ -1,9 +1,9 @@
-# Проверка, что портал и каталог отдаются корректно после пуша.
+# Проверка целостности статики портала перед публикацией.
 name: pages-check
 on:
   push:
     branches: [main]
-  workflow_dispatch:
+  pull_request:
 jobs:
   check:
     runs-on: ubuntu-latest
@@ -11,6 +11,28 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: 20 }
-      - run: |
-          node -e "JSON.parse(require('fs').readFileSync('catalog.json','utf8')); JSON.parse(require('fs').readFileSync('versions.json','utf8')); JSON.parse(require('fs').readFileSync('sources.json','utf8')); console.log('json ok')"
-          grep -q "<title>MiniAppHub" index.html && echo "index ok"
+      - name: JSON и страницы
+        run: |
+          node -e "
+            const fs = require('fs');
+            for (const f of ['catalog.json','sources.json']) {
+              if (fs.existsSync(f)) JSON.parse(fs.readFileSync(f, 'utf8'));
+            }
+            for (const f of ['index.html','catalog.html','docs.html','downloads.html']) {
+              if (!fs.existsSync(f)) throw new Error('нет страницы ' + f);
+            }
+            console.log('страницы на месте');"
+      - name: Внутренние ссылки
+        run: |
+          node -e "
+            const fs = require('fs');
+            const pages = ['index.html','catalog.html','docs.html','downloads.html'];
+            let bad = 0;
+            for (const p of pages) {
+              const html = fs.readFileSync(p, 'utf8');
+              for (const href of [...html.matchAll(/href=\\\"([^\\\"#:]+?\.html)\\\"/g)].map(m => m[1])) {
+                if (!fs.existsSync(href)) { console.error(p, '→', href, 'не найден'); bad++; }
+              }
+            }
+            if (bad) process.exit(1);
+            console.log('ссылки корректны');"
