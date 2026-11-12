@@ -2,9 +2,14 @@
   "name": "appshell-desktop",
   "title": "Windows",
   "platform": "Windows · MSI / EXE",
-  "version": null,
-  "updated": null,
-  "file": null,
-  "changelog": [],
-  "repo": "https://github.com/MiniAppHub/appshell-desktop"
+  "version": "latest",
+  "updated": "2026-11-12",
+  "file": "downloads/files/MiniAppHub-latest-appshell-desktop-setup.exe",
+  "size": 1531245,
+  "changelog": [
+    "version: 0.1.0",
+    "Текущая сборка оболочки Windows. Обновляется при любом изменении версии."
+  ],
+  "repo": "https://github.com/MiniAppHub/appshell-desktop",
+  "release": "https://github.com/MiniAppHub/appshell-desktop/releases/tag/latest"
 }
