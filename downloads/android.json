@@ -3,32 +3,38 @@
   "platform": "android",
   "title": "Android",
   "repo": "https://github.com/MiniAppHub/appshell-mobile",
-  "updated": "2026-11-12",
+  "updated": "2026-11-16",
   "latest": {
     "version": "0.1.0",
-    "tag": "latest",
+    "tag": "v0.1.0",
     "url": "downloads/files/MiniAppHub-0.1.0-appshell-mobile.apk",
     "size": 3763002,
-    "date": "2026-11-12",
-    "notes": []
+    "date": "2026-11-16",
+    "notes": [
+      "проверка записи истории"
+    ]
   },
   "major": {
     "version": "0.1.0",
     "tag": "v0.1.0",
     "url": "downloads/files/MiniAppHub-0.1.0-appshell-mobile.apk",
-    "size": 3763004,
-    "date": "2026-11-12",
-    "notes": []
+    "size": 3763002,
+    "date": "2026-11-16",
+    "notes": [
+      "проверка записи истории"
+    ]
   },
   "releases": [
     {
       "version": "0.1.0",
       "tag": "v0.1.0",
       "url": "downloads/files/MiniAppHub-0.1.0-appshell-mobile.apk",
-      "size": 3763004,
-      "date": "2026-11-12",
+      "size": 3763002,
+      "date": "2026-11-16",
       "major": true,
-      "notes": []
+      "notes": [
+        "проверка записи истории"
+      ]
     }
   ]
 }
