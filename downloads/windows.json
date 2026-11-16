@@ -3,14 +3,16 @@
   "platform": "windows",
   "title": "Windows",
   "repo": "https://github.com/MiniAppHub/appshell-desktop",
-  "updated": "2026-11-12",
+  "updated": "2026-11-16",
   "latest": {
     "version": "0.1.0",
-    "tag": "latest",
-    "url": "downloads/files/MiniAppHub-0.1.0-appshell-desktop-setup.exe",
-    "size": 1531245,
-    "date": "2026-11-12",
-    "notes": []
+    "tag": "v0.1.0",
+    "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/v0.1.0/MiniAppHub-desktop-0.1.0-setup.exe",
+    "size": 1529961,
+    "date": "2026-11-16",
+    "notes": [
+      "????? ?????? ? ??????: ????? ?????? ? ?????? ? ??????? ?????? Windows"
+    ]
   },
   "major": {
     "version": "0.1.0",
@@ -24,11 +26,13 @@
     {
       "version": "0.1.0",
       "tag": "v0.1.0",
-      "url": "downloads/files/MiniAppHub-0.1.0-appshell-desktop-setup.exe",
-      "size": 1499664,
-      "date": "2026-11-12",
-      "major": true,
-      "notes": []
+      "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/v0.1.0/MiniAppHub-desktop-0.1.0-setup.exe",
+      "size": 1529961,
+      "date": "2026-11-16",
+      "major": false,
+      "notes": [
+        "????? ?????? ? ??????: ????? ?????? ? ?????? ? ??????? ?????? Windows"
+      ]
     }
   ]
 }
