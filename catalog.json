@@ -55,24 +55,24 @@
       "id": "headmad.qr-tools",
       "name": "qr-tools",
       "author": "headmad",
-      "description": "Генератор и сканер QR-кодов. Фоновый API: генерация QR в SVG для других приложений.",
-      "url": "https://miniapphub.github.io/app-headmad-qr-tools/",
-      "repo": "https://github.com/MiniAppHub/app-headmad-qr-tools",
-      "icon": "https://miniapphub.github.io/app-headmad-qr-tools/assets/icon.svg",
-      "permissions": [],
-      "manifest": "https://miniapphub.github.io/app-headmad-qr-tools/mapp.manifest.json",
-      "updated": null,
+      "description": "Генератор и сканер QR-кодов",
       "web": "https://miniapphub.github.io/app-headmad-qr-tools/",
+      "url": "https://miniapphub.github.io/app-headmad-qr-tools/",
+      "icon": "https://miniapphub.github.io/app-headmad-qr-tools/assets/icon.svg",
+      "manifest": "https://miniapphub.github.io/app-headmad-qr-tools/mapp.manifest.json",
+      "permissions": [],
       "version": {
-        "latest": {
-          "v": "1.1.0",
-          "url": null
-        },
         "major": {
           "v": "1.0.0",
-          "url": null
+          "url": "https://github.com/MiniAppHub/app-headmad-qr-tools/releases/download/v1.0.0/MiniAppHub-app-1.1.0.zip"
+        },
+        "latest": {
+          "v": "1.1.0",
+          "url": "https://github.com/MiniAppHub/app-headmad-qr-tools/releases/download/latest/MiniAppHub-app-1.1.0.zip"
         }
-      }
+      },
+      "repo": "https://github.com/MiniAppHub/app-headmad-qr-tools",
+      "updated": "2026-11-16"
     }
   ]
 }
