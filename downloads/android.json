@@ -8,10 +8,10 @@
     "version": "0.1.0",
     "tag": "android-v0.1.0",
     "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/android-v0.1.0/MiniAppHub-v0.1.0-android.apk",
-    "size": 3762691,
+    "size": 3762694,
     "date": "2026-11-16",
     "notes": [
-      "Релиз уходит в портал: копия релиза и запись в историю версий Android"
+      "Классификация: последний релиз выбирается только по числовым тегам vX.Y.Z, служебный latest игнорируется"
     ]
   },
   "releases": [
@@ -19,10 +19,10 @@
       "version": "0.1.0",
       "tag": "android-v0.1.0",
       "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/android-v0.1.0/MiniAppHub-v0.1.0-android.apk",
-      "size": 3762691,
+      "size": 3762694,
       "date": "2026-11-16",
       "notes": [
-        "Релиз уходит в портал: копия релиза и запись в историю версий Android"
+        "Классификация: последний релиз выбирается только по числовым тегам vX.Y.Z, служебный latest игнорируется"
       ]
     }
   ]
