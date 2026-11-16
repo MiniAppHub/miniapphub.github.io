@@ -33,8 +33,6 @@ const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) =>
 
 const PLATFORMS = ['android', 'windows'];
 
-const esc2 = esc;
-
 function size(bytes) {
   if (!bytes) return '';
   const mb = bytes / 1048576;
@@ -45,31 +43,26 @@ function row(r, current) {
   const badge = r.version === current ? ' <span class="tag on">актуальная</span>' : '';
   return `
     <li class="rel">
-      <a class="relv" href="${esc2(r.url)}" download>v${esc2(r.version)}</a>${badge}
-      <span class="muted">${esc2(r.date || '')}${size(r.size)}</span>
-      ${r.major ? '<span class="tag">мажор</span>' : ''}
+      <a class="relv" href="${esc(r.url)}" download>v${esc(r.version)}</a>${badge}
+      <span class="muted">${esc(r.date || '')}${size(r.size)}</span>
     </li>`;
 }
 
 function card(d) {
   const latest = d.latest || {};
-  const major = d.major || {};
   const list = Array.isArray(d.releases) ? d.releases : [];
   const notes = Array.isArray(latest.notes) && latest.notes.length
-    ? `<ul>${latest.notes.slice(0, 5).map((c) => `<li>${esc2(c)}</li>`).join('')}</ul>`
+    ? `<ul>${latest.notes.slice(0, 5).map((c) => `<li>${esc(c)}</li>`).join('')}</ul>`
     : '<p class="muted" style="font-size:13px;margin:0">Список изменений пуст.</p>';
   return `
     <div class="card">
-      <h3>${esc2(d.title || d.platform)} <span class="tag">${esc2(d.platform || '')}</span></h3>
-      <div class="ver">Актуальная версия ${esc2(latest.version || '—')} · обновлено ${esc2(d.updated || '—')}${size(latest.size)}</div>
-      <div class="ver">Последний мажорный релиз ${esc2(major.version || '—')}</div>
+      <h3>${esc(d.title || d.platform)} <span class="tag">${esc(d.platform || '')}</span></h3>
+      <div class="ver">Актуальная версия ${esc(latest.version || '—')} · обновлено ${esc(d.updated || '—')}${size(latest.size)}</div>
       ${notes}
       <div class="foot" style="margin-top:12px;display:flex;align-items:center;gap:10px">
         ${latest.url
-          ? `<a class="btn" href="${esc2(latest.url)}" download>Скачать ${esc2(latest.version || '')}</a>`
+          ? `<a class="btn" href="${esc(latest.url)}" download>Скачать v${esc(latest.version || '')}</a>`
           : '<span class="tag">сборка идёт</span>'}
-        ${major.url && major.version !== latest.version
-          ? `<a class="btn ghost" href="${esc2(major.url)}" download>Мажор ${esc2(major.version)}</a>` : ''}
       </div>
       ${list.length ? `<details class="hist"><summary>История версий (${list.length})</summary><ul>${list.map((r) => row(r, latest.version)).join('')}</ul></details>` : ''}
     </div>`;
@@ -82,7 +75,7 @@ function card(d) {
       if (!res.ok) throw new Error('HTTP ' + res.status);
       return card(await res.json());
     } catch (err) {
-      return card({ title: name, platform: name, latest: {}, major: {}, releases: [] });
+      return card({ title: name, platform: name, latest: {}, releases: [] });
     }
   }));
   $('list').innerHTML = cards.join('');

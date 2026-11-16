@@ -1,37 +1,26 @@
 {
-  "schema": 1,
+  "schema": 2,
   "platform": "android",
   "title": "Android",
   "repo": "https://github.com/MiniAppHub/appshell-mobile",
   "updated": "2026-11-16",
   "latest": {
     "version": "0.1.0",
-    "tag": "v0.1.0",
-    "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/v0.1.0/MiniAppHub-mobile-0.1.0.apk",
+    "tag": "android-v0.1.0",
+    "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/android-v0.1.0/MiniAppHub-v0.1.0-android.apk",
     "size": 3762691,
     "date": "2026-11-16",
     "notes": [
       "Релиз уходит в портал: копия релиза и запись в историю версий Android"
     ]
   },
-  "major": {
-    "version": "0.1.0",
-    "tag": "v0.1.0",
-    "url": "downloads/files/MiniAppHub-0.1.0-appshell-mobile.apk",
-    "size": 3763002,
-    "date": "2026-11-16",
-    "notes": [
-      "проверка записи истории"
-    ]
-  },
   "releases": [
     {
       "version": "0.1.0",
-      "tag": "v0.1.0",
-      "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/v0.1.0/MiniAppHub-mobile-0.1.0.apk",
+      "tag": "android-v0.1.0",
+      "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/android-v0.1.0/MiniAppHub-v0.1.0-android.apk",
       "size": 3762691,
       "date": "2026-11-16",
-      "major": false,
       "notes": [
         "Релиз уходит в портал: копия релиза и запись в историю версий Android"
       ]

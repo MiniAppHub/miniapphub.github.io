@@ -1,11 +1,12 @@
 {
-  "schema": 1,
+  "schema": 2,
   "platform": "windows",
   "title": "Windows",
   "repo": "https://github.com/MiniAppHub/appshell-desktop",
   "updated": "2026-11-16",
   "latest": {
     "version": "0.1.0",
+<<<<<<< HEAD
     "tag": "v0.1.0",
     "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/v0.1.0/MiniAppHub-desktop-0.1.0-setup.exe",
     "size": 1529961,
@@ -20,11 +21,18 @@
     "url": "downloads/files/MiniAppHub-0.1.0-appshell-desktop-setup.exe",
     "size": 1499664,
     "date": "2026-11-12",
+=======
+    "tag": "windows-v0.1.0",
+    "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/windows-v0.1.0/MiniAppHub-v0.1.0-windows.exe",
+    "size": 1529961,
+    "date": "2026-11-16",
+>>>>>>> 32acf30 (Стандартная схема релизов: одна версия — один релиз vX.Y.Z)
     "notes": []
   },
   "releases": [
     {
       "version": "0.1.0",
+<<<<<<< HEAD
       "tag": "v0.1.0",
       "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/v0.1.0/MiniAppHub-desktop-0.1.0-setup.exe",
       "size": 1529961,
@@ -33,6 +41,13 @@
       "notes": [
         "????? ?????? ? ??????: ????? ?????? ? ?????? ? ??????? ?????? Windows"
       ]
+=======
+      "tag": "windows-v0.1.0",
+      "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/windows-v0.1.0/MiniAppHub-v0.1.0-windows.exe",
+      "size": 1529961,
+      "date": "2026-11-16",
+      "notes": []
+>>>>>>> 32acf30 (Стандартная схема релизов: одна версия — один релиз vX.Y.Z)
     }
   ]
 }
