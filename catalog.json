@@ -3,29 +3,6 @@
   "updated": "2026-11-16",
   "apps": [
     {
-      "id": "your-github-login.app-name",
-      "name": "app-name",
-      "author": "your-github-login",
-      "description": "Краткое описание приложения",
-      "web": "https://miniapphub.github.io/template/",
-      "url": "https://miniapphub.github.io/template/",
-      "icon": "https://miniapphub.github.io/template/assets/icon.svg",
-      "manifest": "https://miniapphub.github.io/template/mapp.manifest.json",
-      "permissions": [],
-      "version": {
-        "major": {
-          "v": "1",
-          "url": "https://github.com/MiniAppHub/template/releases/download/v1.0.0/MiniAppHub-app-1.0.0.zip"
-        },
-        "latest": {
-          "v": "1.0.0",
-          "url": "https://github.com/MiniAppHub/template/releases/download/latest/MiniAppHub-app-1.0.0.zip"
-        }
-      },
-      "repo": "https://github.com/MiniAppHub/template",
-      "updated": "2026-11-16"
-    },
-    {
       "id": "miniapphub.home",
       "name": "home",
       "author": "miniapphub",
