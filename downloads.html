@@ -31,46 +31,62 @@ const $ = (id) => document.getElementById(id);
 const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) =>
   ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 
-const CLIENTS = ['appshell-mobile', 'appshell-desktop'];
+const PLATFORMS = ['android', 'windows'];
+
+const esc2 = esc;
+
+function size(bytes) {
+  if (!bytes) return '';
+  const mb = bytes / 1048576;
+  return mb >= 1 ? ` · ${mb.toFixed(1)} МБ` : ` · ${Math.max(1, Math.round(bytes / 1024))} КБ`;
+}
+
+function row(r, current) {
+  const badge = r.version === current ? ' <span class="tag on">актуальная</span>' : '';
+  return `
+    <li class="rel">
+      <a class="relv" href="${esc2(r.url)}" download>v${esc2(r.version)}</a>${badge}
+      <span class="muted">${esc2(r.date || '')}${size(r.size)}</span>
+      ${r.major ? '<span class="tag">мажор</span>' : ''}
+    </li>`;
+}
 
 function card(d) {
-  const changes = Array.isArray(d.changelog) && d.changelog.length
-    ? `<ul>${d.changelog.slice(0, 5).map((c) => `<li>${esc(c)}</li>`).join('')}</ul>`
-    : '<p class="muted" style="font-size:13px;margin:0">Список изменений появится после ближайшего релиза.</p>';
-  const size = d.size ? ` · ${(d.size / 1048576).toFixed(1)} МБ` : '';
-  const link = d.file
-    ? `<a class="btn" href="${esc(d.file)}" download>Скачать</a>`
-    : `<span class="tag">сборка идёт</span>`;
+  const latest = d.latest || {};
+  const major = d.major || {};
+  const list = Array.isArray(d.releases) ? d.releases : [];
+  const notes = Array.isArray(latest.notes) && latest.notes.length
+    ? `<ul>${latest.notes.slice(0, 5).map((c) => `<li>${esc2(c)}</li>`).join('')}</ul>`
+    : '<p class="muted" style="font-size:13px;margin:0">Список изменений пуст.</p>';
   return `
     <div class="card">
-      <h3>${esc(d.title || d.name)} <span class="tag">${esc(d.platform || '')}</span></h3>
-      <div class="ver">Версия ${esc(d.version || '—')} · обновлено ${esc(d.updated || '—')}${size}</div>
-      ${changes}
+      <h3>${esc2(d.title || d.platform)} <span class="tag">${esc2(d.platform || '')}</span></h3>
+      <div class="ver">Актуальная версия ${esc2(latest.version || '—')} · обновлено ${esc2(d.updated || '—')}${size(latest.size)}</div>
+      <div class="ver">Последний мажорный релиз ${esc2(major.version || '—')}</div>
+      ${notes}
       <div class="foot" style="margin-top:12px;display:flex;align-items:center;gap:10px">
-        ${link}
-        ${d.file ? `<a class="muted" href="${esc(d.file.replace(/^.*\//, 'downloads/files/'))}.json" hidden></a>` : ''}
+        ${latest.url
+          ? `<a class="btn" href="${esc2(latest.url)}" download>Скачать ${esc2(latest.version || '')}</a>`
+          : '<span class="tag">сборка идёт</span>'}
+        ${major.url && major.version !== latest.version
+          ? `<a class="btn ghost" href="${esc2(major.url)}" download>Мажор ${esc2(major.version)}</a>` : ''}
       </div>
-      ${d.file ? `<div class="file">${esc(d.file)}</div>` : ''}
+      ${list.length ? `<details class="hist"><summary>История версий (${list.length})</summary><ul>${list.map((r) => row(r, latest.version)).join('')}</ul></details>` : ''}
     </div>`;
 }
 
 (async () => {
-  const cards = await Promise.all(CLIENTS.map(async (name) => {
+  const cards = await Promise.all(PLATFORMS.map(async (name) => {
     try {
       const res = await fetch('downloads/' + name + '.json', { cache: 'no-cache' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       return card(await res.json());
-    } catch {
-      return card({ title: name, platform: name.replace('appshell-', ''), version: '—', updated: '—' });
+    } catch (err) {
+      return card({ title: name, platform: name, latest: {}, major: {}, releases: [] });
     }
   }));
   $('list').innerHTML = cards.join('');
 })();
 </script>
-
-<footer><div class="wrap">
-  <span>MiniAppHub · HTML5 мини-приложения</span>
-  <span><a href="docs.html">API</a> · <a href="catalog.html">Каталог</a> · <a href="downloads.html">Скачать</a></span>
-</div></footer>
 </body>
 </html>

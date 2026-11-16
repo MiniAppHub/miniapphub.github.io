@@ -1,0 +1,82 @@
+# Приём данных от репозиториев. Портал не опрашивает чужие репозитории:
+# оболочки и мини-приложения сами присылают данные событием repository_dispatch.
+#
+#   shell-release — релиз оболочки: запись в downloads/<platform>.json (история версий)
+#   app-release   — версия мини-приложения: запись в catalog.json (упрощённый манифест)
+name: portal-update
+
+on:
+  repository_dispatch:
+    types: [shell-release, app-release]
+  workflow_dispatch:
+    inputs:
+      kind:
+        description: 'Что записать'
+        type: choice
+        options: [shell-release, app-release]
+        default: shell-release
+      payload:
+        description: 'JSON-данные (те же, что присылает репозиторий)'
+        required: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: portal-update
+  cancel-in-progress: false
+
+jobs:
+  record:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: actions/setup-node@v4
+        with: { node-version: 20 }
+
+      - name: Выбрать сценарий
+        id: pick
+        run: |
+          set -eu
+          if [ "${{ github.event_name }}" = "repository_dispatch" ]; then
+            echo "kind=${{ github.event.action }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "kind=${{ inputs.kind }}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Записать релиз оболочки
+        if: steps.pick.outputs.kind == 'shell-release'
+        env:
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            export PAYLOAD='${{ inputs.payload }}'
+          fi
+          node scripts/apply-shell-release.mjs
+
+      - name: Записать версию мини-приложения
+        if: steps.pick.outputs.kind == 'app-release'
+        env:
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            export PAYLOAD='${{ inputs.payload }}'
+          fi
+          node scripts/apply-app-release.mjs
+
+      - name: Проверить результат
+        run: |
+          node -e "
+            const fs = require('fs');
+            for (const f of ['catalog.json', ...fs.readdirSync('downloads').filter(n => n.endsWith('.json')).map(n => 'downloads/' + n)]) {
+              const d = JSON.parse(fs.readFileSync(f, 'utf8'));
+              console.log(f, 'ok');
+            }"
+
+      - name: Коммит
+        run: |
+          git config user.name "MiniAppHub"
+          git config user.email "bot@users.noreply.github.com"
+          git add catalog.json downloads
+          git diff --cached --quiet || (git commit -m "portal: ${{ steps.pick.outputs.kind }} $(date -u +%F)" && git push)

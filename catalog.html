@@ -46,7 +46,8 @@ function render(list) {
   $('apps').innerHTML = list.length ? list.map((a) => {
     const local = byId.get(a.id);
     const isOn = Boolean(local);
-    const upd = local && local.version !== a.version;
+    const ver = (a.version && a.version.latest && a.version.latest.v) || a.version || '';
+    const upd = local && local.version !== ver;
     const label = upd ? 'Обновить' : isOn ? 'Установлено' : 'Установить';
     const cls = isOn && !upd ? 'tag on' : 'tag';
     const btn = upd
@@ -63,7 +64,7 @@ function render(list) {
           <div class="ico">${a.icon ? `<img src="${esc(a.icon)}" alt="">` : esc((a.name || '?')[0].toUpperCase())}</div>
           <div>
             <div class="name">${esc(a.name)}</div>
-            <div class="meta">${esc(a.author || '')} · v${esc(a.version)}</div>
+            <div class="meta">${esc(a.author || '')} · v${esc(ver)}</div>
           </div>
         </div>
         <p>${esc(a.description || '')}</p>

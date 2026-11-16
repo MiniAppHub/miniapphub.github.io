@@ -6,7 +6,6 @@
       "id": "miniapphub.home",
       "name": "home",
       "author": "miniapphub",
-      "version": "0.1.0",
       "description": "Лаунчер платформы: рабочий стол установленных приложений, каталог, настройки оболочки.",
       "url": "https://miniapphub.github.io/app-miniapphub-home/",
       "repo": "https://github.com/MiniAppHub/app-miniapphub-home",
@@ -16,26 +15,41 @@
         "shell.launcher"
       ],
       "manifest": "https://miniapphub.github.io/app-miniapphub-home/mapp.manifest.json",
-      "release": null,
-      "archive": null,
       "updated": null,
-      "changelog": []
+      "web": "https://miniapphub.github.io/app-miniapphub-home/",
+      "version": {
+        "latest": {
+          "v": "0.1.0",
+          "url": null
+        },
+        "major": {
+          "v": "0.1.0",
+          "url": null
+        }
+      }
     },
     {
       "id": "headmad.qr-tools",
       "name": "qr-tools",
       "author": "headmad",
-      "version": "1.1.0",
       "description": "Генератор и сканер QR-кодов. Фоновый API: генерация QR в SVG для других приложений.",
       "url": "https://miniapphub.github.io/app-headmad-qr-tools/",
       "repo": "https://github.com/MiniAppHub/app-headmad-qr-tools",
       "icon": "https://miniapphub.github.io/app-headmad-qr-tools/assets/icon.svg",
       "permissions": [],
       "manifest": "https://miniapphub.github.io/app-headmad-qr-tools/mapp.manifest.json",
-      "release": null,
-      "archive": null,
       "updated": null,
-      "changelog": []
+      "web": "https://miniapphub.github.io/app-headmad-qr-tools/",
+      "version": {
+        "latest": {
+          "v": "1.1.0",
+          "url": null
+        },
+        "major": {
+          "v": "1.0.0",
+          "url": null
+        }
+      }
     }
   ]
 }
