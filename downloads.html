@@ -40,7 +40,8 @@ function size(bytes) {
 }
 
 function row(r, current) {
-  const badge = r.version === current ? ' <span class="tag on">актуальная</span>' : '';
+  const badge = (r.version === current ? ' <span class="tag on">актуальная</span>' : '')
+    + (r.prerelease ? ' <span class="tag">предрелиз</span>' : '');
   return `
     <li class="rel">
       <a class="relv" href="${esc(r.url)}" download>v${esc(r.version)}</a>${badge}
@@ -59,6 +60,9 @@ function card(d) {
       <h3>${esc(d.title || d.platform)} <span class="tag">${esc(d.platform || '')}</span></h3>
       <div class="ver">Актуальная версия ${esc(latest.version || '—')} · обновлено ${esc(d.updated || '—')}${size(latest.size)}</div>
       ${notes}
+      ${d.prerelease
+        ? `<div class="ver">Предрелиз ${esc(d.prerelease.version)} · <a href="${esc(d.prerelease.url)}" download>скачать</a></div>`
+        : ''}
       <div class="foot" style="margin-top:12px;display:flex;align-items:center;gap:10px">
         ${latest.url
           ? `<a class="btn" href="${esc(latest.url)}" download>Скачать v${esc(latest.version || '')}</a>`
