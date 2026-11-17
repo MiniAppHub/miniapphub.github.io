@@ -7,24 +7,24 @@
       "name": "home",
       "author": "miniapphub",
       "description": "Лаунчер платформы: рабочий стол установленных приложений, каталог, настройки оболочки.",
-      "web": null,
-      "url": null,
-      "icon": "undefinedassets/icon.svg",
-      "manifest": "undefinedmapp.manifest.json",
+      "web": "https://miniapphub.github.io/app-miniapphub-home/",
+      "url": "https://miniapphub.github.io/app-miniapphub-home/",
+      "icon": "https://miniapphub.github.io/app-miniapphub-home/assets/icon.svg",
+      "manifest": "https://miniapphub.github.io/app-miniapphub-home/mapp.manifest.json",
       "permissions": [
         "apps.manage",
         "shell.launcher"
       ],
       "version": {
         "v": "0.1.0",
-        "url": null
+        "url": "https://github.com/MiniAppHub/app-miniapphub-home/releases/download/v0.1.0/MiniAppHub-v0.1.0.zip"
       },
       "repo": "https://github.com/MiniAppHub/app-miniapphub-home",
       "updated": "2026-11-17",
       "versions": [
         {
           "v": "0.1.0",
-          "url": null,
+          "url": "https://github.com/MiniAppHub/app-miniapphub-home/releases/download/v0.1.0/MiniAppHub-v0.1.0.zip",
           "date": "2026-11-17"
         }
       ]
