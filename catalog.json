@@ -16,12 +16,17 @@
         "shell.launcher"
       ],
       "version": {
-        "v": "0.1.0",
-        "url": "https://github.com/MiniAppHub/app-miniapphub-home/releases/download/v0.1.0/MiniAppHub-v0.1.0.zip"
+        "v": "0.2.0",
+        "url": "https://github.com/MiniAppHub/app-miniapphub-home/releases/download/v0.2.0/MiniAppHub-v0.2.0.zip"
       },
       "repo": "https://github.com/MiniAppHub/app-miniapphub-home",
       "updated": "2026-11-17",
       "versions": [
+        {
+          "v": "0.2.0",
+          "url": "https://github.com/MiniAppHub/app-miniapphub-home/releases/download/v0.2.0/MiniAppHub-v0.2.0.zip",
+          "date": "2026-11-17"
+        },
         {
           "v": "0.1.0",
           "url": "https://github.com/MiniAppHub/app-miniapphub-home/releases/download/v0.1.0/MiniAppHub-v0.1.0.zip",
