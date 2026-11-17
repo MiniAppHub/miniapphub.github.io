@@ -3,15 +3,15 @@
   "platform": "android",
   "title": "Android",
   "repo": "https://github.com/MiniAppHub/appshell-mobile",
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "latest": {
     "version": "0.1.0",
     "tag": "android-v0.1.0",
     "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/android-v0.1.0/MiniAppHub-v0.1.0-android.apk",
-    "size": 3762694,
-    "date": "2026-11-16",
+    "size": 3777204,
+    "date": "2026-11-17",
     "notes": [
-      "Классификация: последний релиз выбирается только по числовым тегам vX.Y.Z, служебный latest игнорируется"
+      "Нативный слой Android был не в git: .gitignore 'android/' игнорировал native/android"
     ]
   },
   "releases": [
@@ -19,10 +19,10 @@
       "version": "0.1.0",
       "tag": "android-v0.1.0",
       "url": "https://github.com/MiniAppHub/miniapphub.github.io/releases/download/android-v0.1.0/MiniAppHub-v0.1.0-android.apk",
-      "size": 3762694,
-      "date": "2026-11-16",
+      "size": 3777204,
+      "date": "2026-11-17",
       "notes": [
-        "Классификация: последний релиз выбирается только по числовым тегам vX.Y.Z, служебный latest игнорируется"
+        "Нативный слой Android был не в git: .gitignore 'android/' игнорировал native/android"
       ]
     }
   ]
