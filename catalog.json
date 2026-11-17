@@ -1,31 +1,31 @@
 {
   "schema": 1,
-  "updated": "2026-11-16",
+  "updated": "2026-11-17",
   "apps": [
     {
       "id": "miniapphub.home",
       "name": "home",
       "author": "miniapphub",
       "description": "Лаунчер платформы: рабочий стол установленных приложений, каталог, настройки оболочки.",
-      "url": "https://miniapphub.github.io/app-miniapphub-home/",
-      "repo": "https://github.com/MiniAppHub/app-miniapphub-home",
-      "icon": "https://miniapphub.github.io/app-miniapphub-home/assets/icon.svg",
+      "web": null,
+      "url": null,
+      "icon": "undefinedassets/icon.svg",
+      "manifest": "undefinedmapp.manifest.json",
       "permissions": [
         "apps.manage",
         "shell.launcher"
       ],
-      "manifest": "https://miniapphub.github.io/app-miniapphub-home/mapp.manifest.json",
-      "updated": null,
-      "web": "https://miniapphub.github.io/app-miniapphub-home/",
       "version": {
         "v": "0.1.0",
         "url": null
       },
+      "repo": "https://github.com/MiniAppHub/app-miniapphub-home",
+      "updated": "2026-11-17",
       "versions": [
         {
           "v": "0.1.0",
           "url": null,
-          "date": "2026-11-16"
+          "date": "2026-11-17"
         }
       ]
     },
